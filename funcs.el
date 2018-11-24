@@ -9,4 +9,6 @@
 				     (interactive)
 				     (start-process-shell-command "xkb" nil "setxkbmap us")
 				     (message "switched to us layout")))
-  (spacemacs/set-leader-keys "br" 'rename-buffer))
+  (spacemacs/set-leader-keys "br" 'rename-buffer)
+  (evil-set-initial-state 'term-mode 'emacs)
+  )
