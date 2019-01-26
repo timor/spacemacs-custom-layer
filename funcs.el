@@ -12,3 +12,14 @@
   (spacemacs/set-leader-keys "br" 'rename-buffer)
   (evil-set-initial-state 'term-mode 'emacs)
   )
+
+;; TODO Buggy.  Sometimes switches to other states
+(defun timor/evil-escape-dwim ()
+  "Switch to previous state.  If the current state is the same as
+  the previous state, switch to normal state instead.  If already
+  in the normal state, stay in normal state."
+  (interactive)
+  (unless (eq evil-state 'normal)
+    (if (eq evil-previous-state evil-state)
+        (evil-change-state 'normal)
+      (evil-change-to-previous-state))))

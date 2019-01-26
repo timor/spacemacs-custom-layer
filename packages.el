@@ -23,6 +23,7 @@
     (define-key evil-lisp-state-map (kbd "F") 'evil-find-char-backward)
     (define-key evil-lisp-state-map (kbd ";") 'evil-repeat-find-char)
     (define-key evil-lisp-state-map (kbd "*") 'spacemacs/enter-ahs-forward)
+    (define-key evil-insert-state-map [escape] 'timor/evil-escape-dwim))
   )
 
 (defun timor/post-init-evil ()
