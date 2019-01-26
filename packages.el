@@ -9,8 +9,8 @@
 
 (defun timor/post-init-exwm ()
   (spacemacs/exwm-bind-switch-to-or-run-command "s-f" "Firefox" "firefox")
-  (spacemacs/exwm-bind-command "<XF86MonBrightnessUp>" "xbacklight -inc 5")
-  (spacemacs/exwm-bind-command "<XF86MonBrightnessDown>" "xbacklight -dec 5")
+  (spacemacs/exwm-bind-command "<XF86MonBrightnessUp>" "light -A 5")
+  (spacemacs/exwm-bind-command "<XF86MonBrightnessDown>" "light -U 5")
   (exwm-input-set-key (kbd "<s-tab>") 'spacemacs/alternate-buffer))
 
 (defun timor/post-init-evil-lisp-state ()
