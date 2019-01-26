@@ -25,6 +25,14 @@
     (define-key evil-lisp-state-map (kbd "*") 'spacemacs/enter-ahs-forward)
   )
 
+(defun timor/post-init-evil ()
+  (evil-define-text-object evil-inner-line (count &optional beg end type)
+    "Define the current line contents, from first non-blank to
+    last non-blank as text object"
+    (list (save-excursion (evil-first-non-blank) (point))
+          (save-excursion (evil-last-non-blank) (1+ (point)))))
+  (define-key evil-inner-text-objects-map "l" 'evil-inner-line))
+
 (defun timor/post-init-winner ()
   (with-eval-after-load 'winner
     (dolist (n '("*Help*" "*inferior-lisp*"))
