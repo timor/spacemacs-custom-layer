@@ -13,6 +13,11 @@
   (spacemacs/exwm-bind-command "<XF86MonBrightnessDown>" "light -U 5")
   (exwm-input-set-key (kbd "<s-tab>") 'spacemacs/alternate-buffer))
 
+(defun timor/sp-wrap-as-string (&optional arg)
+  "Wrap a symbal with string quotes."
+  (interactive "P")
+  (sp-wrap-with-pair "\""))
+
 (defun timor/post-init-evil-lisp-state ()
   (with-eval-after-load 'evil-lisp-state
     (define-key evil-lisp-state-map (kbd "SPC") spacemacs-default-map)
@@ -23,6 +28,7 @@
     (define-key evil-lisp-state-map (kbd "F") 'evil-find-char-backward)
     (define-key evil-lisp-state-map (kbd ";") 'evil-repeat-find-char)
     (define-key evil-lisp-state-map (kbd "*") 'spacemacs/enter-ahs-forward)
+    (define-key evil-lisp-state-map (kbd "\"") 'timor/sp-wrap-as-string)
     (define-key evil-insert-state-map [escape] 'timor/evil-escape-dwim))
   )
 
