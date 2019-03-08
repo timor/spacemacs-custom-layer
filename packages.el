@@ -60,3 +60,9 @@
 (defun timor/post-init-company ()
   (spacemacs|disable-company 'eshell-mode)
   )
+
+(defun timor/post-init-fuel ()
+  (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-with-dup)
+  (add-hook 'fuel-listener-mode-hook 'timor/fuel-fix-sp-single-quote)
+  (add-hook 'fuel-debug-mode-hook 'evil-insert-state)
+  (add-hook 'fuel-debug-uses-mode-hook 'evil-insert-state))

@@ -55,3 +55,11 @@ hidden files and follow links."
     (when pos
       (goto-char pos)
       (forward-char -1))))
+
+(defun timor/fuel-fix-sp-single-quote ()
+  (sp--remove-local-pair "'"))
+
+(defun timor/fuel-send-with-dup ()
+  (interactive)
+  (comint-send-string nil "dup ")
+  (comint-send-input))
