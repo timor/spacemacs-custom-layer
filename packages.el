@@ -20,6 +20,7 @@
 
 (defun timor/post-init-evil-lisp-state ()
   (with-eval-after-load 'evil-lisp-state
+    (define-key evil-lisp-state-map (kbd "j") (evil-lisp-state-enter-command timor/next-open-paren))
     (define-key evil-lisp-state-map (kbd "SPC") spacemacs-default-map)
     (define-key evil-lisp-state-map (kbd "'") (lambda () (interactive) (avy-goto-char ?\()))
     (define-key evil-lisp-state-map (kbd "q") 'sp-indent-defun)

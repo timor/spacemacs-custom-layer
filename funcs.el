@@ -28,3 +28,13 @@
   (interactive "P")
   (sp-kill-sexp arg)
   (evil-insert 1))
+
+(defun timor/next-open-paren (&optional count)
+  (interactive "p")
+  (let ((pos (save-excursion
+               (when (looking-at-p "(")
+                 (forward-char 1))
+               (search-forward "(" nil t count))))
+    (when pos
+      (goto-char pos)
+      (forward-char -1))))
