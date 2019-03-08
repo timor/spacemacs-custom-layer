@@ -22,6 +22,7 @@
   (with-eval-after-load 'evil-lisp-state
     (define-key evil-lisp-state-map (kbd "SPC") spacemacs-default-map)
     (define-key evil-lisp-state-map (kbd "'") (lambda () (interactive) (avy-goto-char ?\()))
+    (define-key evil-lisp-state-map (kbd "q") 'sp-indent-defun)
     (define-key evil-lisp-state-map (kbd "O") 'evil-open-above)
     (define-key evil-lisp-state-map (kbd "o") 'evil-open-below)
     (define-key evil-lisp-state-map (kbd "A") 'evil-append-li)
