@@ -14,7 +14,7 @@
   (exwm-input-set-key (kbd "<s-tab>") 'spacemacs/alternate-buffer))
 
 (defun timor/sp-wrap-as-string (&optional arg)
-  "Wrap a symbal with string quotes."
+  "Wrap a symbol with string quotes."
   (interactive "P")
   (sp-wrap-with-pair "\""))
 
