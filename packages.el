@@ -26,6 +26,7 @@
     (define-key evil-lisp-state-map (kbd "o") 'evil-open-below)
     (define-key evil-lisp-state-map (kbd "A") 'evil-append-li)
     (define-key evil-lisp-state-map (kbd "f") 'evil-find-char)
+    (define-key evil-lisp-state-map (kbd "C") 'timor/change-sexp)
     (define-key evil-lisp-state-map (kbd "F") 'evil-find-char-backward)
     (define-key evil-lisp-state-map (kbd ";") 'evil-repeat-find-char)
     (define-key evil-lisp-state-map (kbd "*") 'spacemacs/enter-ahs-forward)

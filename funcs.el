@@ -23,3 +23,8 @@
     (if (eq evil-previous-state evil-state)
         (evil-change-state 'normal)
       (evil-change-to-previous-state))))
+
+(defun timor/change-sexp (&optional arg)
+  (interactive "P")
+  (sp-kill-sexp arg)
+  (evil-insert 1))
