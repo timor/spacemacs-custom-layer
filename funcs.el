@@ -24,6 +24,23 @@
         (evil-change-state 'normal)
       (evil-change-to-previous-state))))
 
+(defun timor/search-project-auto (&optional search-all)
+  "Replacement for spacemacs/search-project-auto that does not
+try to be too clever. If called with prefix-argument, also search
+hidden files and follow links."
+  (interactive "P")
+  (let* ((project-root (projectile-project-root))
+         (counsel-auto-command (caar spacemacs--counsel-commands))
+         (search-directory
+          (or project-root
+              (read-directory-name "Start from directory: ")))
+         (projectile-search-cmd (intern (concat "counsel-projectile-" counsel-auto-command)))
+         (directory-search-cmd (intern (concat "counsel-" (caar spacemacs--counsel-commands))))
+         (extra-args (when search-all "--hidden --follow")))
+    (if project-root
+        (funcall projectile-search-cmd extra-args)
+      (funcall directory-search-cmd nil search-directory extra-args))))
+
 (defun timor/change-sexp (&optional arg)
   (interactive "P")
   (sp-kill-sexp arg)

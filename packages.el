@@ -50,7 +50,8 @@
       (delete n winner-boring-buffers))))
 
 (defun timor/post-init-ivy ()
-  (setq ivy-initial-inputs-alist '()))
+  (setq ivy-initial-inputs-alist '())
+  (spacemacs/set-leader-keys "/" 'timor/search-project-auto))
 
 (defun timor/post-init-projectile ()
   (spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
