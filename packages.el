@@ -5,6 +5,7 @@
                            ivy
                            projectile
                            company
+                           fuel
                            ))
 
 (defun timor/post-init-exwm ()
@@ -62,7 +63,18 @@
   )
 
 (defun timor/post-init-fuel ()
-  (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-with-dup)
+  (message "DEBUG(timor-layer): post init fuel")
+  (with-eval-after-load 'fuel-listener
+    (message "DEBUG(timor-layer): eval after load fuel-listener-mode")
+    (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-with-dup))
   (add-hook 'fuel-listener-mode-hook 'timor/fuel-fix-sp-single-quote)
-  (add-hook 'fuel-debug-mode-hook 'evil-insert-state)
-  (add-hook 'fuel-debug-uses-mode-hook 'evil-insert-state))
+  (add-hook 'factor-mode-hook 'timor/fuel-fix-sp-single-quote)
+  (with-eval-after-load 'smartparens
+    (loop for mode in '(fuel-listener-mode factor-mode) do
+         (loop for char across "[{(" do
+               (sp-local-pair mode (string char) nil :post-handlers '(:add " | ")))))
+
+  ;; These modes have their own bindings
+  (evil-set-initial-state 'fuel-debug-mode 'insert)
+  (evil-set-initial-state 'fuel-debug-uses-mode-hook 'insert)
+  )
