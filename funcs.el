@@ -63,3 +63,20 @@ hidden files and follow links."
   (interactive)
   (comint-send-string nil "dup ")
   (comint-send-input))
+
+(defun timor//fuel-mode-sp-post-handler (id action context)
+  (when (eq action 'insert)
+    (insert "  ")
+    (backward-char 1)))
+
+(defun timor/fuel-mode-insert-from-listener-input-ring ()
+  (interactive)
+  (unless fuel-listener--buffer
+    (user-error "Cannot find fuel listener buffer"))
+  (let* ((inputs
+          (delete-duplicates (mapcar 'substring-no-properties
+                                     (ring-elements
+                                      (buffer-local-value 'comint-input-ring fuel-listener--buffer)))
+                             :test 'string-equal))
+         (input (ivy-read "Insert recent listener input: " inputs :require-match t)))
+    (insert input)))

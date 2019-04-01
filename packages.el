@@ -63,18 +63,18 @@
   )
 
 (defun timor/post-init-fuel ()
-  (message "DEBUG(timor-layer): post init fuel")
   (with-eval-after-load 'fuel-listener
-    (message "DEBUG(timor-layer): eval after load fuel-listener-mode")
     (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-with-dup))
   (add-hook 'fuel-listener-mode-hook 'timor/fuel-fix-sp-single-quote)
   (add-hook 'factor-mode-hook 'timor/fuel-fix-sp-single-quote)
   (with-eval-after-load 'smartparens
-    (loop for mode in '(fuel-listener-mode factor-mode) do
-         (loop for char across "[{(" do
-               (sp-local-pair mode (string char) nil :post-handlers '(:add " | ")))))
+    (loop for char across "[{(" do
+          (sp-local-pair '(factor-mode fuel-listener-mode) (string char) nil
+                         :post-handlers '(:add timor//fuel-mode-sp-post-handler))))
 
   ;; These modes have their own bindings
-  (evil-set-initial-state 'fuel-debug-mode 'insert)
-  (evil-set-initial-state 'fuel-debug-uses-mode-hook 'insert)
-  )
+  ;; (evil-set-initial-state 'fuel-debug-mode 'insert)
+  ;; (evil-set-initial-state 'fuel-debug-uses-mode 'insert)
+  (with-eval-after-load 'ivy
+    (spacemacs/set-leader-keys-for-major-mode 'factor-mode
+      "il" 'timor/fuel-mode-insert-from-listener-input-ring)))
