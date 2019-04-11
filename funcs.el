@@ -69,6 +69,14 @@ hidden files and follow links."
     (insert "  ")
     (backward-char 1)))
 
+(defun timor/fuel-test-vocab-refresh ()
+  "Like `fuel-test-vocab', but send a refresh-all to the listener
+  before that, invalidating all removed definitions"
+  (interactive)
+  (comint-send-string (fuel-listener--process)
+                      "refresh-all\n")
+  (call-interactively 'fuel-test-vocab))
+
 (defun timor/fuel-mode-insert-from-listener-input-ring ()
   (interactive)
   (unless fuel-listener--buffer

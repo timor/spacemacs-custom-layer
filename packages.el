@@ -87,4 +87,8 @@
   ;; (evil-set-initial-state 'fuel-debug-uses-mode 'insert)
   (with-eval-after-load 'ivy
     (spacemacs/set-leader-keys-for-major-mode 'factor-mode
-      "il" 'timor/fuel-mode-insert-from-listener-input-ring)))
+      "il" 'timor/fuel-mode-insert-from-listener-input-ring
+      "tA" 'timor/fuel-test-vocab-refresh))
+  (with-eval-after-load 'fuel-help
+    (define-key fuel-help-mode-map (kbd "o") 'link-hint-open-link)
+    ))
