@@ -49,9 +49,9 @@ hidden files and follow links."
 (defun timor/next-open-paren (&optional count)
   (interactive "p")
   (let ((pos (save-excursion
-               (when (looking-at-p "(")
+               (when (looking-at-p "[[({]")
                  (forward-char 1))
-               (search-forward "(" nil t count))))
+               (re-search-forward "[[({]" nil t count))))
     (when pos
       (goto-char pos)
       (forward-char -1))))
