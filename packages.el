@@ -91,4 +91,5 @@
       "tA" 'timor/fuel-test-vocab-refresh))
   (with-eval-after-load 'fuel-help
     (define-key fuel-help-mode-map (kbd "o") 'link-hint-open-link)
+    (define-key fuel-help-mode-map (kbd "H") 'fuel-help)
     ))
