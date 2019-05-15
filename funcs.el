@@ -72,6 +72,11 @@ hidden files and follow links."
   (comint-send-string nil " ] preserving\n")
   )
 
+(defun timor/fuel-send-drop (&optional n)
+  "Drop argument from stack, with n prefix, drop n arguments"
+  (interactive "p")
+  (comint-send-string nil (format "%d [ drop ] times \n" n)))
+
 (defun timor//fuel-mode-sp-post-handler (id action context)
   (when (eq action 'insert)
     (insert "  ")
