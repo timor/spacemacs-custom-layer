@@ -64,6 +64,14 @@ hidden files and follow links."
   (comint-send-string nil "dup ")
   (comint-send-input))
 
+(defun timor/fuel-send-keep-inputs ()
+  "Send input, wrapping it with preserving.  Requires combinators.smart vocabulary."
+  (interactive)
+  (comint-send-string nil "[ ")
+  (comint-send-input)
+  (comint-send-string nil " ] preserving\n")
+  )
+
 (defun timor//fuel-mode-sp-post-handler (id action context)
   (when (eq action 'insert)
     (insert "  ")

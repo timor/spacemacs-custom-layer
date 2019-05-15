@@ -74,7 +74,7 @@
 
 (defun timor/post-init-fuel ()
   (with-eval-after-load 'fuel-listener
-    (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-with-dup))
+    (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-keep-inputs)
   (add-hook 'fuel-listener-mode-hook 'timor/fuel-fix-sp-single-quote)
   (add-hook 'factor-mode-hook 'timor/fuel-fix-sp-single-quote)
   (with-eval-after-load 'smartparens
