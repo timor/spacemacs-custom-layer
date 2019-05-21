@@ -22,7 +22,8 @@
 
 (defun timor/post-init-evil-lisp-state ()
   (with-eval-after-load 'evil-lisp-state
-    (define-key evil-lisp-state-map (kbd "j") (evil-lisp-state-enter-command timor/next-open-paren))
+    (define-key evil-lisp-state-map (kbd "j")
+      (evil-lisp-state-enter-command timor/next-open-paren))
     (define-key evil-lisp-state-map (kbd "SPC") spacemacs-default-map)
     (define-key evil-lisp-state-map (kbd "'") (lambda () (interactive) (avy-goto-char ?\()))
     (define-key evil-lisp-state-map (kbd "q") 'sp-indent-defun)
@@ -35,6 +36,8 @@
     (define-key evil-lisp-state-map (kbd ";") 'evil-repeat-find-char)
     (define-key evil-lisp-state-map (kbd "*") 'spacemacs/enter-ahs-forward)
     (define-key evil-lisp-state-map (kbd "\"") 'timor/sp-wrap-as-string)
+    (define-key evil-lisp-state-map (kbd "g") 'spacemacs/jump-to-definition)
+    (define-key evil-lisp-state-map (kbd "G") 'spacemacs/jump-to-definition-other-window)
     (define-key evil-insert-state-map [escape] 'timor/evil-escape-dwim))
   )
 
