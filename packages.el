@@ -7,6 +7,7 @@
                            company
                            fuel
                            evil
+                           outshine
                            ))
 
 (defun timor/post-init-exwm ()
@@ -109,3 +110,8 @@
     (define-key fuel-help-mode-map (kbd "J") 'forward-button)
     (define-key fuel-help-mode-map (kbd "K") 'backward-button)
     ))
+
+(defun timor/post-init-outshine ()
+  (with-eval-after-load 'outshine
+    (spacemacs/set-leader-keys
+      "aO." 'spacemacs/outshine-transient-state/body)))
