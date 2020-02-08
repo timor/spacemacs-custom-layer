@@ -72,15 +72,43 @@ hidden files and follow links."
   (comint-send-string nil " ] preserving\n")
   )
 
+(defun timor/fuel-walk ()
+  "Send input enclosed in call to walker. Needs UI running in
+  thread to work correctly!"
+  (interactive)
+  (comint-send-string nil "[ ")
+  (comint-send-input)
+  (comint-send-string nil " ] walk \n"))
+
 (defun timor/fuel-send-drop (&optional n)
   "Drop argument from stack, with n prefix, drop n arguments"
   (interactive "p")
   (comint-send-string nil (format "%d [ drop ] times \n" n)))
 
+(defun timor/fuel-maybe-fixup-whitespace ()
+  "Intended to be called when skipping out of a pair empty pair, but
+  need to prevent [words] from turning into [words ]."
+  (looking-back (rx (syntax open-parenthesis) (* (group whitespace)) (* any)))
+  (if (match-string 1)
+      (progn
+        ;; (message "yay!")
+        (cycle-spacing -1 nil 'single-shot))
+    (progn
+      ;; (message "woot!")
+      (delete-horizontal-space))))
+
 (defun timor//fuel-mode-sp-post-handler (id action context)
+  ;; (message "Action: %s" action)
   (when (eq action 'insert)
     (insert "  ")
-    (backward-char 1)))
+    (backward-char 1))
+  (when (eq action 'skip-closing-pair)
+    (save-excursion
+      (goto-char sp-pre-command-point)
+      (timor/fuel-maybe-fixup-whitespace))))
+
+(defun timor//fuel-mode-sp-pre-handler (id action context)
+  )
 
 (defun timor/fuel-test-vocab-refresh ()
   "Like `fuel-test-vocab', but send a refresh-all to the listener
@@ -101,3 +129,16 @@ hidden files and follow links."
                              :test 'string-equal))
          (input (ivy-read "Insert recent listener input: " inputs :require-match t)))
     (insert input)))
+
+(defun timor/factor-sp-wrap-square (&optional arg)
+  (interactive "P")
+  (sp-wrap-square)
+  (save-excursion
+    (let ((wrapped (sp-get-sexp)))
+      (goto-char (1+ (sp-get wrapped :beg)))
+      (insert " ")
+      (goto-char (sp-get wrapped :end))
+      (insert " "))))
+
+(defun timor/fuel-setup-lisp-state ()
+  (define-key evil-lisp-state-local-map (kbd "w") (evil-lisp-state-enter-command timor/factor-sp-wrap-square)))
