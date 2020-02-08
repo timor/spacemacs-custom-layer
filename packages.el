@@ -14,7 +14,9 @@
   (exwm/bind-command "<XF86MonBrightnessUp>" "light -A 5")
   (exwm/bind-command "<XF86MonBrightnessDown>" "light -U 5")
   (exwm/bind-switch-to-or-run-command "s-v" "Pavucontrol" "pavucontrol")
-  (exwm-input-set-key (kbd "<s-tab>") 'spacemacs/alternate-buffer))
+  (exwm-input-set-key (kbd "<s-tab>") 'spacemacs/alternate-buffer)
+  (exwm-input-set-key (kbd "s-p") 'counsel-projectile-switch-project)
+  )
 
 (defun timor/sp-wrap-as-string (&optional arg)
   "Wrap a symbol with string quotes."
@@ -30,7 +32,7 @@
     (define-key evil-lisp-state-map (kbd "q") 'sp-indent-defun)
     (define-key evil-lisp-state-map (kbd "O") 'evil-open-above)
     (define-key evil-lisp-state-map (kbd "o") 'evil-open-below)
-    (define-key evil-lisp-state-map (kbd "A") 'evil-append-li)
+    (define-key evil-lisp-state-map (kbd "A") 'evil-append-line)
     (define-key evil-lisp-state-map (kbd "f") 'evil-find-char)
     (define-key evil-lisp-state-map (kbd "C") 'timor/change-sexp)
     (define-key evil-lisp-state-map (kbd "F") 'evil-find-char-backward)
@@ -39,6 +41,7 @@
     (define-key evil-lisp-state-map (kbd "\"") 'timor/sp-wrap-as-string)
     (define-key evil-lisp-state-map (kbd "g") 'spacemacs/jump-to-definition)
     (define-key evil-lisp-state-map (kbd "G") 'spacemacs/jump-to-definition-other-window)
+    (define-key evil-lisp-state-map (kbd "x") 'sp-kill-sexp)
     (define-key evil-insert-state-map [escape] 'timor/evil-escape-dwim))
   )
 
@@ -82,6 +85,7 @@
     (define-key fuel-listener-mode-map (kbd "C-d") 'timor/fuel-send-drop))
   (add-hook 'fuel-listener-mode-hook 'timor/fuel-fix-sp-single-quote)
   (add-hook 'factor-mode-hook 'timor/fuel-fix-sp-single-quote)
+  (spacemacs/set-leader-keys-for-major-mode 'factor-mode "hV" 'fuel-help-vocab)
   (with-eval-after-load 'smartparens
     (loop for char across "[{(" do
           (sp-local-pair '(factor-mode fuel-listener-mode) (string char) nil
@@ -97,4 +101,6 @@
   (with-eval-after-load 'fuel-help
     (define-key fuel-help-mode-map (kbd "o") 'link-hint-open-link)
     (define-key fuel-help-mode-map (kbd "H") 'fuel-help)
+    (define-key fuel-help-mode-map (kbd "J") 'forward-button)
+    (define-key fuel-help-mode-map (kbd "K") 'backward-button)
     ))
