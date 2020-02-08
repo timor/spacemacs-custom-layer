@@ -5,6 +5,7 @@
                            ivy
                            projectile
                            company
+                           notmuch
                            fuel
                            evil
                            outshine
@@ -115,3 +116,7 @@
   (with-eval-after-load 'outshine
     (spacemacs/set-leader-keys
       "aO." 'spacemacs/outshine-transient-state/body)))
+
+(defun timor/post-init-notmuch ()
+  (with-eval-after-load 'exwm
+    (exwm-input-set-key (kbd "s-i") (lambda() (interactive) (notmuch-search "tag:flagged OR tag:unread")))))
