@@ -89,7 +89,12 @@
   (with-eval-after-load 'smartparens
     (loop for char across "[{(" do
           (sp-local-pair '(factor-mode fuel-listener-mode) (string char) nil
-                         :post-handlers '(:add timor//fuel-mode-sp-post-handler))))
+                         :post-handlers '(:add timor//fuel-mode-sp-post-handler)
+                         :pre-handlers '(:add timor//fuel-mode-sp-pre-handler)))
+    (add-hook 'factor-mode-hook 'timor/fuel-setup-lisp-state)
+    ;; Does not work with smartparens mode because cannot insert ';' anymore...
+    ;; (sp-local-pair '(factor-mode fuel-listener-mode) ":" ";" :actions '(autoskip navigate))
+    )
 
   ;; These modes have their own bindings
   ;; (evil-set-initial-state 'fuel-debug-mode 'insert)
