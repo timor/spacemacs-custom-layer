@@ -101,11 +101,11 @@ hidden files and follow links."
   ;; (message "Action: %s" action)
   (when (eq action 'insert)
     (insert "  ")
-    (backward-char 1))
-  (when (eq action 'skip-closing-pair)
-    (save-excursion
-      (goto-char sp-pre-command-point)
-      (timor/fuel-maybe-fixup-whitespace))))
+    (backward-char 1)))
+
+(defun timor//factor-mode-colon-post-insert (id action context)
+  (when (eq action 'insert))
+  )
 
 (defun timor//fuel-mode-sp-pre-handler (id action context)
   )
@@ -132,13 +132,7 @@ hidden files and follow links."
 
 (defun timor/factor-sp-wrap-square (&optional arg)
   (interactive "P")
-  (sp-wrap-square)
-  (save-excursion
-    (let ((wrapped (sp-get-sexp)))
-      (goto-char (1+ (sp-get wrapped :beg)))
-      (insert " ")
-      (goto-char (sp-get wrapped :end))
-      (insert " "))))
+  (sp-wrap-with-pair "[ "))
 
 (defun timor/fuel-setup-lisp-state ()
   (define-key evil-lisp-state-local-map (kbd "w") (evil-lisp-state-enter-command timor/factor-sp-wrap-square)))

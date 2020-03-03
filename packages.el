@@ -86,16 +86,21 @@
     (define-key fuel-listener-mode-map (kbd "<C-return>") 'timor/fuel-send-keep-inputs)
     (define-key fuel-listener-mode-map (kbd "C-d") 'timor/fuel-send-drop))
   (add-hook 'fuel-listener-mode-hook 'timor/fuel-fix-sp-single-quote)
-  (add-hook 'factor-mode-hook 'timor/fuel-fix-sp-single-quote)
   (spacemacs/set-leader-keys-for-major-mode 'factor-mode "hV" 'fuel-help-vocab)
   (with-eval-after-load 'smartparens
     (loop for char across "[{(" do
           (sp-local-pair '(factor-mode fuel-listener-mode) (string char) nil
                          :post-handlers '(:add timor//fuel-mode-sp-post-handler)
                          :pre-handlers '(:add timor//fuel-mode-sp-pre-handler)))
+    (add-hook 'factor-mode-hook 'timor/fuel-fix-sp-single-quote)
     (add-hook 'factor-mode-hook 'timor/fuel-setup-lisp-state)
     ;; Does not work with smartparens mode because cannot insert ';' anymore...
-    ;; (sp-local-pair '(factor-mode fuel-listener-mode) ":" ";" :actions '(autoskip navigate))
+    ;; (sp-local-pair '(factor-mode fuel-listener-mode) ":" " ;" :actions '(insert autoskip navigate)
+    ;;                :post-handlers '(timor//factor-mode-colon-post-insert))
+    ;; (sp-local-pair '(factor-mode fuel-listener-mode) "::" " ;")
+    (sp-local-pair '(factor-mode fuel-listener-mode) "[ " " ]")
+    (sp-local-pair '(factor-mode fuel-listener-mode) "{ " " }")
+    (sp-local-pair '(factor-mode fuel-listener-mode) "( " " )")
     )
 
   ;; These modes have their own bindings
