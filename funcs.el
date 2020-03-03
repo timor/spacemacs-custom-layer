@@ -142,3 +142,37 @@ hidden files and follow links."
 
 (defun timor/fuel-setup-lisp-state ()
   (define-key evil-lisp-state-local-map (kbd "w") (evil-lisp-state-enter-command timor/factor-sp-wrap-square)))
+
+(defun timor/factor-delete-indentation-before (arg)
+  "Intended for advising `delete-indentation' to always insert a
+blank at the beginning of the next line before join, so that a
+`fixup-whitespace' will be able to deal with that correctly."
+  (when (eq major-mode 'factor-mode)
+    (save-excursion
+      (when arg (forward-line 1))
+      (end-of-line)
+      (insert ?\s))))
+
+(defun timor/factor-fixup-whitespace-around (oldfun)
+  "Intended for advising `fixup-whitespace' in factor mode to stop gobbling up whitespace before delimiters."
+  (if (eq major-mode 'factor-mode)
+      (let ((had-whitespace-closing (looking-at-p (rx (1+ space) (syntax close-parenthesis))))
+            (had-whitespace-opening (save-excursion
+                                      (forward-char -1)
+                                      (looking-at-p (rx (syntax open-parenthesis) (1+ space))))))
+        (when (or had-whitespace-closing had-whitespace-opening)
+          (message "DEBUG: maybe rescue whitespace"))
+        (funcall oldfun)
+        (if (and had-whitespace-closing (save-excursion
+                                          (forward-char -1)
+                                          (looking-at-p (rx (not space) (syntax close-parenthesis)))))
+            (progn
+              (message "DEBUG: re-insert space")
+              (insert ?\s))
+          (when (and had-whitespace-opening (save-excursion
+                                              (forward-char -1)
+                                              (looking-at-p
+                                               (rx (syntax open-parenthesis) (not space)))))
+            (message "DEBUG: re-insert space")
+            (insert ?\s))))
+    (funcall oldfun)))

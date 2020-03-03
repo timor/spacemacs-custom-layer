@@ -110,6 +110,12 @@
     (define-key fuel-help-mode-map (kbd "H") 'fuel-help)
     (define-key fuel-help-mode-map (kbd "J") 'forward-button)
     (define-key fuel-help-mode-map (kbd "K") 'backward-button)
+    )
+  (with-eval-after-load 'factor-mode
+    (define-advice delete-indentation (:before (arg) factor-join-rescue-whitespace)
+      (timor/factor-delete-indentation-before arg))
+    (define-advice fixup-whitespace (:around (oldfun) factor-fixup-rescue-whitespace)
+      (timor/factor-fixup-whitespace-around oldfun))
     ))
 
 (defun timor/post-init-outshine ()
