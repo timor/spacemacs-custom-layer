@@ -123,7 +123,7 @@ hidden files and follow links."
   (unless fuel-listener--buffer
     (user-error "Cannot find fuel listener buffer"))
   (let* ((inputs
-          (delete-duplicates (mapcar 'substring-no-properties
+          (cl-delete-duplicates (mapcar 'substring-no-properties
                                      (ring-elements
                                       (buffer-local-value 'comint-input-ring fuel-listener--buffer)))
                              :test 'string-equal))
