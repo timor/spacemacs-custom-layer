@@ -12,7 +12,7 @@
                            ))
 
 (defun timor/post-init-exwm ()
-  (exwm/bind-switch-to-or-run-command "s-f" "Firefox" "firefox")
+  (exwm/bind-switch-to-or-run-command "s-f" "Vivaldi-stable" "vivaldi")
   (exwm/bind-command "<XF86MonBrightnessUp>" "light -A 5")
   (exwm/bind-command "<XF86MonBrightnessDown>" "light -U 5")
   (exwm/bind-switch-to-or-run-command "s-v" "Pavucontrol" "pavucontrol")

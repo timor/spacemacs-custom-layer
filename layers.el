@@ -4,5 +4,5 @@
                                            ivy-initial-inputs-alist nil
                                            ivy-wrap t
                                            )
-                                      (shell :variables shell-default-shell 'multi-term)
+                                      (shell :variables shell-default-shell 'vterm)
                                       ))
