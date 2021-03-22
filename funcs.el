@@ -172,3 +172,25 @@ blank at the beginning of the next line before join, so that a
             (message "DEBUG: re-insert space")
             (insert ?\s))))
     (funcall oldfun)))
+
+
+(defun timor//vterm-maybe-exit-copy-mode-in-exit-hook ()
+  "Determine whether to resume vterm output.
+
+Intended to be run when exiting normal state or visual state into
+neither of these.
+"
+  (case evil-next-state
+    ((normal visual))
+    (t (vterm-copy-mode 0))))
+
+(defun timor//vterm-enter-copy-mode ()
+  (vterm-copy-mode 1))
+
+(defun timor//vterm-setup-evil-hooks ()
+  (add-hook 'evil-visual-state-entry-hook 'timor//vterm-enter-copy-mode nil t)
+  (add-hook 'evil-normal-state-entry-hook 'timor//vterm-enter-copy-mode nil t)
+  (add-hook 'evil-visual-state-exit-hook
+            'timor//vterm-maybe-exit-copy-mode-in-exit-hook nil t)
+  (add-hook 'evil-normal-state-exit-hook
+            'timor//vterm-maybe-exit-copy-mode-in-exit-hook nil t))
