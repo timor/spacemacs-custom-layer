@@ -11,6 +11,8 @@
 				     (message "switched to us layout")))
   (spacemacs/set-leader-keys "br" 'rename-buffer)
   (evil-set-initial-state 'term-mode 'emacs)
+  (with-eval-after-load 'link-hint
+    (spacemacs/set-leader-keys "xo" 'link-hint-open-link))
   )
 
 ;; TODO Buggy.  Sometimes switches to other states
