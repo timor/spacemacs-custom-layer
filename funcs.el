@@ -12,6 +12,14 @@
   (spacemacs/set-leader-keys "br" 'rename-buffer)
   (evil-set-initial-state 'term-mode 'emacs))
 
+(defun timor//projectile-shell-run-function ()
+  (intern (concat "projectile-run-" (symbol-name shell-default-shell))))
+
+(defun timor/projectile-run-term-with-default-shell (&rest args)
+  (interactive (advice-eval-interactive-spec
+                (cadr (interactive-form (timor//projectile-shell-run-function)))))
+  (apply (timor//projectile-shell-run-function) args))
+
 ;; TODO Buggy.  Sometimes switches to other states
 (defun timor/evil-escape-dwim ()
   "Switch to previous state.  If the current state is the same as

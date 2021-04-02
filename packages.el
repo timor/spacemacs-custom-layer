@@ -84,6 +84,7 @@
 
 (defun timor/post-init-projectile ()
   (spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
+  (spacemacs/set-leader-keys "p'" 'timor/projectile-run-term-with-default-shell)
   )
 
 (defun timor/post-init-company ()
