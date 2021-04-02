@@ -15,7 +15,12 @@
 
 (defun timor/post-init-vterm ()
   ;; (add-hook 'vterm-mode-hook 'timor//vterm-setup-evil-hooks)
-  (spacemacs/set-leader-keys-for-major-mode 'vterm-mode "t" 'vterm-copy-mode))
+  (spacemacs/set-leader-keys-for-major-mode 'vterm-mode "t" 'vterm-copy-mode)
+  (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'visual 'vterm-mode-map
+      "[[" 'vterm-previous-prompt
+      "]]" 'vterm-next-prompt
+      )))
 
 (defun timor/post-init-link-hint ()
   (spacemacs/set-leader-keys "xo" 'link-hint-open-link))
