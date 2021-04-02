@@ -10,11 +10,15 @@
                            evil
                            outshine
                            vterm
+                           link-hint
                            ))
 
 (defun timor/post-init-vterm ()
   ;; (add-hook 'vterm-mode-hook 'timor//vterm-setup-evil-hooks)
   (spacemacs/set-leader-keys-for-major-mode 'vterm-mode "t" 'vterm-copy-mode))
+
+(defun timor/post-init-link-hint ()
+  (spacemacs/set-leader-keys "xo" 'link-hint-open-link))
 
 (defun timor/post-init-exwm ()
   (exwm/bind-switch-to-or-run-command "s-f" "Vivaldi-stable" "vivaldi")
