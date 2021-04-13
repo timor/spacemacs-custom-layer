@@ -11,7 +11,15 @@
                            outshine
                            vterm
                            link-hint
+                           bluetooth
                            ))
+
+(defun timor/init-bluetooth ()
+    (use-package bluetooth
+      :defer t
+      :init
+      (progn
+        (spacemacs/set-leader-keys "ob" 'bluetooth-list-devices))))
 
 (defun timor/post-init-vterm ()
   ;; (add-hook 'vterm-mode-hook 'timor//vterm-setup-evil-hooks)
