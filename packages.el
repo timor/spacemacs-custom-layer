@@ -13,6 +13,7 @@
                            weechat
                            link-hint
                            bluetooth
+                           counsel-projectile
                            ))
 
 (defun timor/init-bluetooth ()
@@ -63,6 +64,12 @@
       "[[" 'vterm-previous-prompt
       "]]" 'vterm-next-prompt
       )))
+
+(defun timor/post-init-counsel-projectile ()
+  (with-eval-after-load 'counsel-projectile
+    (counsel-projectile-modify-action
+    'counsel-projectile-switch-project-action
+    '((default counsel-projectile-switch-project-action-vc)))))
 
 (defun timor/post-init-link-hint ()
   (spacemacs/set-leader-keys "xo" 'link-hint-open-link))
