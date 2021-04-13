@@ -1,3 +1,16 @@
+;; Source: https://emacs.stackexchange.com/questions/21651/when-split-window-sensibly-is-called-how-to-make-the-decision-depend-on-the-wid
+(defun timor//sensible-window-split (&optional window)
+  (let ((window (or window (selected-window))))
+    (cond
+     ((and (> (window-width window)
+              (* 2 (window-height window)))
+           (window-splittable-p window 'horizontal))
+      (with-selected-window window
+        (split-window-right)))
+     ((window-splittable-p window)
+      (with-selected-window window
+        (split-window-below))))))
+
 (defun timor/user-config ()
   (spacemacs/declare-prefix "o" "custom")
   (spacemacs/declare-prefix "ok" "keyboard layout")
@@ -10,7 +23,9 @@
 				     (start-process-shell-command "xkb" nil "setxkbmap us")
 				     (message "switched to us layout")))
   (spacemacs/set-leader-keys "br" 'rename-buffer)
-  (evil-set-initial-state 'term-mode 'emacs))
+  (evil-set-initial-state 'term-mode 'emacs)
+  (setq split-window-preferred-function #'timor//sensible-window-split)
+  )
 
 (defun timor//projectile-shell-run-function ()
   (intern (concat "projectile-run-" (symbol-name shell-default-shell))))
