@@ -10,6 +10,7 @@
                            evil
                            outshine
                            vterm
+                           weechat
                            link-hint
                            bluetooth
                            ))
@@ -20,6 +21,39 @@
       :init
       (progn
         (spacemacs/set-leader-keys "ob" 'bluetooth-list-devices))))
+
+(defun timor/init-weechat ()
+  (use-package weechat
+    :defer t
+    :init
+    (progn
+      (defvar weechat-formatting-regex
+        (rx-let ((attr (in "*!/_|"))   ;NOTE:  is not documented
+                 (std  (= 2 digit))
+                 (astd (seq attr (= 2 digit)))
+                 (ext  (seq "@" (= 5 digit)))
+                 (aext (seq "@" attr (= 5 digit))))
+          (rx
+           (or (seq ""
+                    (or std
+                        ext
+                        (seq "F" (or std astd ext aext))
+                        (seq "B" (or std ext))
+                        (seq "*" (or std
+                                     astd
+                                     ext
+                                     aext
+                                     (seq (or std astd ext aext)
+                                          ","
+                                          (or std astd ext aext))))
+                        (seq "b" (in "-FDB#_il"))
+                        ""))
+               (seq "" attr)
+               (seq "" attr)
+               ""))))
+      ;; (autoload 'rx-form)
+      )
+    ))
 
 (defun timor/post-init-vterm ()
   ;; (add-hook 'vterm-mode-hook 'timor//vterm-setup-evil-hooks)
