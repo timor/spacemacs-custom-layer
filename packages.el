@@ -14,6 +14,7 @@
                            link-hint
                            bluetooth
                            counsel-projectile
+                           auto-highlight-symbol
                            ))
 
 (defun timor/init-bluetooth ()
@@ -195,3 +196,7 @@
 (defun timor/post-init-notmuch ()
   (with-eval-after-load 'exwm
     (exwm-input-set-key (kbd "s-i") (lambda() (interactive) (notmuch-search "tag:flagged OR tag:unread")))))
+
+(defun timor/post-init-auto-highlight-symbol ()
+  (with-eval-after-load 'auto-highlight-symbol
+    (setq ahs-include '((factor-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?<>'()-]+$")) )))
