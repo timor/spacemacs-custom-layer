@@ -15,7 +15,11 @@
                            bluetooth
                            counsel-projectile
                            auto-highlight-symbol
+                           swiper
                            ))
+
+(defun timor/post-init-swiper ()
+  (add-to-list 'savehist-ignored-variables 'swiper-history))
 
 (defun timor/init-bluetooth ()
     (use-package bluetooth
