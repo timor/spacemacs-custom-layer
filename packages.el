@@ -1,4 +1,5 @@
 (defconst timor-packages '(
+                           edit-server
                            exwm
                            winner
                            evil-lisp-state
@@ -17,6 +18,11 @@
                            auto-highlight-symbol
                            swiper
                            ))
+
+(defun timor/init-edit-server ()
+  (use-package edit-server
+    :init (edit-server-start)
+    :config (setq edit-server-default-major-mode 'markdown-mode)))
 
 (defun timor/post-init-swiper ()
   (add-to-list 'savehist-ignored-variables 'swiper-history))
