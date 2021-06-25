@@ -79,8 +79,10 @@
 (defun timor/post-init-counsel-projectile ()
   (with-eval-after-load 'counsel-projectile
     (counsel-projectile-modify-action
-    'counsel-projectile-switch-project-action
-    '((default counsel-projectile-switch-project-action-vc)))))
+     'counsel-projectile-switch-project-action
+     '((default counsel-projectile-switch-project-action-vc)))
+    (add-to-list 'spacemacs--ivy-file-actions
+                 '("x" counsel-find-file-extern "open externally") t)))
 
 (defun timor/post-init-link-hint ()
   (spacemacs/set-leader-keys "xo" 'link-hint-open-link))
