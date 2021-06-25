@@ -214,3 +214,8 @@ neither of these.
             'timor//vterm-maybe-exit-copy-mode-in-exit-hook nil t)
   (add-hook 'evil-normal-state-exit-hook
             'timor//vterm-maybe-exit-copy-mode-in-exit-hook nil t))
+
+(defun timor/message-compose-maybe-sign ()
+  "Default smime signing."
+  (when mml-secure-smime-sign-with-sender
+    (mml-secure-message-sign-smime)))

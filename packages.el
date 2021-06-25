@@ -189,8 +189,7 @@
     (define-advice delete-indentation (:before (arg) factor-join-rescue-whitespace)
       (timor/factor-delete-indentation-before arg))
     (define-advice fixup-whitespace (:around (oldfun) factor-fixup-rescue-whitespace)
-      (timor/factor-fixup-whitespace-around oldfun))
-    ))
+      (timor/factor-fixup-whitespace-around oldfun))))
 
 (defun timor/post-init-outshine ()
   (with-eval-after-load 'outshine
@@ -199,7 +198,10 @@
 
 (defun timor/post-init-notmuch ()
   (with-eval-after-load 'exwm
-    (exwm-input-set-key (kbd "s-i") (lambda() (interactive) (notmuch-search "tag:flagged OR tag:unread")))))
+    (exwm-input-set-key (kbd "s-i") (lambda() (interactive) (notmuch-search "tag:flagged OR tag:unread"))))
+  (with-eval-after-load 'message
+    (add-hook 'message-setup-hook
+              'timor/message-compose-maybe-sign)))
 
 (defun timor/post-init-auto-highlight-symbol ()
   (with-eval-after-load 'auto-highlight-symbol
