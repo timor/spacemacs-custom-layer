@@ -211,23 +211,15 @@
     (add-hook 'message-setup-hook
               'timor/message-compose-maybe-sign))
   (when (not (functionp 'notmuch-show-insert-part-application/pkcs7-mime))
-    (defun notmuch-show-insert-part-application/pkcs7-mime (msg part content-type
-							                                                  nth depth button)
-      (let* ((encstatus-plist (car (plist-get part :encstatus)))
-             (encstatus (plist-get encstatus-plist :status)))
-        (notmuch-crypto-insert-encstatus-button encstatus-plist)
-        (if (not (string= encstatus "bad"))
-            (notmuch-show-insert-part-multipart/signed msg
-                                                       (car (plist-get part
-								                                                       :content))
-                                                       content-type
-                                                       nth
-                                                       depth
-                                                       button))))
-
+    (fset 'notmuch-show-insert-part-application/pkcs7-mime
+          'timor/notmuch-show-insert-part-application/pkcs7-mime)
     (fset 'notmuch-show-insert-part-application/x-pkcs7-mime
-          'notmuch-show-insert-part-application/pkcs7-mime)
-    ))
+          'timor/notmuch-show-insert-part-application/pkcs7-mime))
+  (with-eval-after-load 'mm-decode
+    (add-to-list 'mm-inline-media-tests '("application/pkcs7-signature" timor/mm-display-pkcs7-signature timor/mm-display-pkcs7-p))
+    (add-to-list 'mm-inline-media-tests '("application/x-pkcs7-signature" timor/mm-display-pkcs7-signature timor/mm-display-pkcs7-p))
+    ;; Needed to prevent notmuch from ignoring mm-handlers for application/*
+    (add-to-list 'mm-inline-override-types "foo/bogus")))
 
 (defun timor/post-init-auto-highlight-symbol ()
   (with-eval-after-load 'auto-highlight-symbol

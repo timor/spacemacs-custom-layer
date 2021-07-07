@@ -219,3 +219,28 @@ neither of these.
   "Default smime signing."
   (when mml-secure-smime-sign-with-sender
     (mml-secure-message-sign-smime)))
+
+(defun timor/notmuch-show-insert-part-application/pkcs7-mime (msg part content-type
+							                                              nth depth button)
+  (let* ((encstatus-plist (car (plist-get part :encstatus)))
+         (encstatus (plist-get encstatus-plist :status)))
+    (notmuch-crypto-insert-encstatus-button encstatus-plist)
+    (if (not (string= encstatus "bad"))
+        (notmuch-show-insert-part-multipart/signed msg
+                                                   (car (plist-get part
+								                                                   :content))
+                                                   content-type
+                                                   nth
+                                                   depth
+                                                   button))))
+(defun timor/mm-display-pkcs7-p (handle)
+  (executable-find "openssl"))
+
+(defun timor/mm-display-pkcs7-signature (handle)
+  (mm-insert-inline
+   handle
+   (mm-with-unibyte-buffer
+     (insert (mm-get-part handle))
+     (call-process-region (point-min) (point-max) "openssl" t t nil
+                          "pkcs7" "-inform" "der" "-noout" "-print_certs")
+     (buffer-string))))
