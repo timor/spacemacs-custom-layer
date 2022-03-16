@@ -17,6 +17,7 @@
                            counsel-projectile
                            auto-highlight-symbol
                            swiper
+                           osm
                            ))
 
 (defun timor/init-edit-server ()
@@ -33,6 +34,29 @@
       :init
       (progn
         (spacemacs/set-leader-keys "ob" 'bluetooth-list-devices))))
+
+(defun timor/init-osm ()
+  (use-package osm
+    :defer t
+    :init
+    (progn
+      (spacemacs/set-leader-keys "oo" 'osm-home
+        )))
+    :config
+    (evilified-state-evilify osm-mode osm-mode-map
+      "j" 'osm-down
+      "J" 'osm-down-down
+      "k" 'osm-up
+      "K" 'osm-up-up
+      "h" 'osm-left
+      "H" 'osm-left-left
+      "l" 'osm-right
+      "L" 'osm-right-right
+      "g" 'osm-home
+      "/" 'osm-search
+      "v" 'osm-server
+      "=" 'osm-zoom-in
+      ))
 
 (defun timor/init-weechat ()
   (use-package weechat
