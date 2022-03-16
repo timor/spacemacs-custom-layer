@@ -244,3 +244,109 @@ neither of these.
      (call-process-region (point-min) (point-max) "openssl" t t nil
                           "pkcs7" "-inform" "der" "-noout" "-print_certs")
      (buffer-string))))
+
+(defun counsel-osm--parse-reply ()
+  (mapcar (lambda (x)
+            `(,(format "%s (%s° %s°)"
+                       (alist-get 'display_name x)
+                       (alist-get 'lat x)
+                       (alist-get 'lon x))
+              ,(string-to-number (alist-get 'lat x))
+              ,(string-to-number (alist-get 'lon x))
+              ,@(mapcar #'string-to-number (alist-get 'boundingbox x))))
+          (let ((json-object-type 'alist)
+                (json-array-type 'list))
+            (json-read))))
+
+(defvar counsel-osm--history ())
+
+(defvar counsel-osm--request-timer nil)
+(defun counsel-osm-function-1 (input)
+  (or
+   (ivy-more-chars)
+   (let* ((view-box (plist-get (ivy-state-extra-props ivy-last)
+                               :counsel-osm--search-box))
+          (query-params `(("format" . "json")
+                          ("q" . ,input)))
+          (params (if view-box
+                      (append query-params
+                              `(("bounded" . "1")
+                                ("viewbox" . ,(format "%s,%s,%s,%s"
+                                                      (first view-box)
+                                                      (second view-box)
+                                                      (third view-box)
+                                                      (fourth view-box)))))
+                    query-params)))
+     (request
+       "https://nominatim.openstreetmap.org/search"
+       :type "GET"
+       :params params
+       :parser #'counsel-osm--parse-reply
+       :error (cl-function
+               (lambda (&key error-thrown &allow-other-keys)
+                 (message "Counsel-OSM-Request error: %s" error-thrown)))
+       :success (cl-function
+                 (lambda (&key data &allow-other-keys)
+                   (ivy-update-candidates
+                    (mapcar (lambda(x)
+                              (propertize (car x) 'osm-goto-args (cdr x)))
+                            data))))
+       :timeout 30))))
+
+(defun counsel-osm-function (input)
+  (when counsel-osm--request-timer
+    (cancel-timer counsel-osm--request-timer))
+  (setq counsel-osm--request-timer
+        (run-with-timer 1 nil #'counsel-osm-function-1 input))
+  0)
+
+(defun counsel-osm-action (selected)
+  (let ((x (get-text-property 0 'osm-goto-args selected)))
+    (osm-goto (car x) (cadr x)
+              (apply #'osm--boundingbox-to-zoom (cddr x)))))
+
+(defun counsel-osm ()
+  (interactive)
+  (ivy-read "Search OSM: " #'counsel-osm-function
+            :action #'counsel-osm-action
+            :dynamic-collection t
+            :require-match t
+            :history 'counsel-osm--history
+            :caller 'counsel-osm
+            ))
+
+(defun osm--viewbox ()
+  (let* ((cx osm--x)
+         (cy osm--y)
+         (z osm--zoom)
+         (x1 (- cx osm--wx))
+         (y1 (- cy osm--wy))
+         (x2 (+ cx osm--wx))
+         (y2 (+ cy osm--wy)))
+    (list
+     (osm--x-to-lon x1 z)
+     (osm--y-to-lat y1 z)
+     (osm--x-to-lon x2 z)
+     (osm--y-to-lat y2 z))))
+
+(defun counsel-osm--view-update ()
+  (with-ivy-window
+    (let* ((text (ivy-state-current ivy-last))
+           (data (get-text-property 0 'osm-goto-args text))
+           (x (osm--lon-to-x (second data) osm--zoom))
+           (y (osm--lat-to-y (first data) osm--zoom))
+           )
+      (osm--put-transient-pin 'osm-center x y text)
+      (osm--update)
+      )))
+
+(defun counsel-osm-view ()
+  (interactive)
+  (ivy-read "Search Current Map View: " #'counsel-osm-function
+            :action #'counsel-osm-action
+            :dynamic-collection t
+            :require-match t
+            :history 'counsel-osm--history
+            :caller 'counsel-osm
+            :update-fn #'counsel-osm--view-update
+            :extra-props `(:counsel-osm--search-box ,(osm--viewbox))))
