@@ -40,7 +40,7 @@
     :defer t
     :init
     (progn
-      (spacemacs/set-leader-keys "oo" 'counsel-osm
+      (spacemacs/set-leader-keys "oo" 'osm-home
         )))
     :config
     (evilified-state-evilify osm-mode osm-mode-map
